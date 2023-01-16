@@ -1,14 +1,21 @@
+import React from 'react'
 import './App.css';
-import { useState } from 'react'
 import NavBar from './components/NavBar/NavBar';
 import ItemListContainer from './components/ItemListContainer/ItemListContainer';
+import ItemDetailContainer from './components/ItemDetailContainer/ItemDetailContainer.js';
+import { BrowserRouter, Routes, Route } from 'react-router-dom'
 
 function App() {
-  const [show, setShow] = useState(false)
   return (
     <div className='App'>
-        { <NavBar /> }
-        { <ItemListContainer greeting="Bienvenidos" /> }
+        <BrowserRouter>
+          <NavBar />
+          <Routes>
+            <Route path='/' element={<ItemListContainer greeting='Todos nuestro products'/>}/>
+            <Route path='/category/:categoryId' element={<ItemListContainer greeting='Productos filtrados'/>} />
+            <Route path='/detail/:productId' element={<ItemDetailContainer greeting='Vista de producto'/>} />
+          </Routes> 
+         </BrowserRouter>
     </div>
   );
 }

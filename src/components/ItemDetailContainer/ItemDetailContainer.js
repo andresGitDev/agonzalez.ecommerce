@@ -1,47 +1,47 @@
-import React from 'react'
-import './ItemListContainer.css'
+import './ItemDetailContainer.css'
 import { useState, useEffect } from 'react'
-import { getProducts, getProductsByCategory} from '../../services/asyncMock'
-import ItemList from '../ItemList/ItemList'
+import { getProducts, getProductById } from '../../services/asyncMock'
+import ItemDetail from '../ItemDetail/ItemDetail'
+import { useParams } from 'react-router-dom'
 import Loading from '../Loading/Loading'
 
-import { useParams } from 'react-router-dom'
-
-const ItemListContainer = ({ greeting }) => {
+const ItemDetailContainer = ({ greeting }) => {
     const [products, setProducts] = useState([])
     const [loading, setLoading] = useState(true)
 
-    const { categoryId } = useParams()
+    const { productId } = useParams()
 
     useEffect(() => {
-        document.title = 'Todos los productos'
+        document.title = 'Vista de producto'
     }, [])
 
     useEffect(() => {
         setLoading(true)
         
-        const asyncFunction = categoryId ? getProductsByCategory : getProducts
+        const asyncFunction = productId ? getProductById : getProducts
 
-        asyncFunction(categoryId).then(response => {
+        asyncFunction(productId).then(response => {
             setProducts(response)
         }).catch(error => {
             console.log(error)
         }).finally(() => {
             setLoading(false)
         })          
-    }, [categoryId])
+    }, [productId])
 
 
     if(loading) {
         return <Loading/>
     }
 
+    
+
     return (
         <div className='ItemListContainer' >
             <h1>{greeting}</h1>
-            <ItemList products={products} />
+            <ItemDetail product={products} />
         </div>
     )
 }
 
-export default ItemListContainer
+export default ItemDetailContainer

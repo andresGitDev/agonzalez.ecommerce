@@ -1,9 +1,11 @@
 import React from 'react'
+import imgCart from './image/cart.svg'
+import './CartWidget.css'
 
 const CartWidget = () => {
     return (
-        <div >
-            <img src='./images/cart.svg' alt='Carrito'/>
+        <div className='CartWidget'>
+            <img src={imgCart} className='CartImg' alt='Carrito'/>
             0
         </div>
     )

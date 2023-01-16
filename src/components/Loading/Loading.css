@@ -1,0 +1,44 @@
+.dots-wrapper {
+    display: flex;
+    margin: 100px;
+    margin-left: 1250px;
+    width: center;
+    place-items: center;
+    height:10vh;
+}
+
+.dot {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    animation: move 0.6s ease-in-out alternate infinite;
+}
+
+.dot:not(:last-child) {
+    margin-right: 12px;
+}
+
+.dot:first-child {
+    background-color: #4285f4;
+}
+
+.dot:nth-child(2) {
+    background-color:#4285f4;
+    animation-delay: 0.2s;
+}
+
+.dot:nth-child(3) {
+    background-color: #4285f4;
+    animation-delay: 0.4s;
+}
+
+.dot:last-child {
+    background-color:#4285f4;
+    animation-delay: 0.6s;
+}
+
+@keyframes move {
+    to {
+        transform: translateY(-15px);
+    }
+}
