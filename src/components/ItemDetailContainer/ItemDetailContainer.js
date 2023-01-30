@@ -1,11 +1,12 @@
 import './ItemDetailContainer.css'
 import { useState, useEffect } from 'react'
-import { getProducts, getProductById } from '../../services/asyncMock'
 import ItemDetail from '../ItemDetail/ItemDetail'
 import { useParams } from 'react-router-dom'
 import Loading from '../Loading/Loading'
+import { getDoc, doc } from 'firebase/firestore'
+import { db } from '../../services/firebase/firebaseConfig'
 
-const ItemDetailContainer = ({ greeting }) => {
+const ItemDetailContainer = () => {
     const [products, setProducts] = useState([])
     const [loading, setLoading] = useState(true)
 
@@ -17,16 +18,15 @@ const ItemDetailContainer = ({ greeting }) => {
 
     useEffect(() => {
         setLoading(true)
-        
-        const asyncFunction = productId ? getProductById : getProducts
-
-        asyncFunction(productId).then(response => {
-            setProducts(response)
+        const docRef = doc(db, 'products', productId)
+        getDoc(docRef).then(doc => {
+            const productAdapted = { id: doc.id, ...doc.data() }
+            setProducts(productAdapted)
         }).catch(error => {
-            console.log(error)
+            setProducts([])
         }).finally(() => {
             setLoading(false)
-        })          
+        })        
     }, [productId])
 
 
@@ -38,8 +38,8 @@ const ItemDetailContainer = ({ greeting }) => {
 
     return (
         <div className='ItemListContainer' >
-            <h1>{greeting}</h1>
-            <ItemDetail product={products} />
+            <h1>{products?.name}</h1>
+            <ItemDetail {...products} />
         </div>
     )
 }

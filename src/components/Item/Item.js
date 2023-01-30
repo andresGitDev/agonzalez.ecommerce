@@ -1,7 +1,7 @@
 import './Item.css'
 import { NavLink } from 'react-router-dom'
 
-const Item = ({id, name, img, price}) => {
+const Item = ({id, name, img, price,stock}) => {
 
 
     return (
@@ -14,6 +14,11 @@ const Item = ({id, name, img, price}) => {
             <picture>
                 <img src={img} alt={name} className="ItemImg"/>
             </picture>
+            <section>
+                <p className="Info">
+                    Disponible: {stock}
+                </p>
+            </section>              
             <section>
                 <p className="Info">
                     Precio: ${price}

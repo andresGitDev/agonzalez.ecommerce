@@ -1,7 +1,8 @@
 import React from 'react'
 import './ItemListContainer.css'
 import { useState, useEffect } from 'react'
-import { getProducts, getProductsByCategory} from '../../services/asyncMock'
+import { getDocs, collection, query, where } from 'firebase/firestore'
+import { db } from '../../services/firebase/firebaseConfig'
 import ItemList from '../ItemList/ItemList'
 import Loading from '../Loading/Loading'
 
@@ -20,27 +21,33 @@ const ItemListContainer = ({ greeting }) => {
     useEffect(() => {
         setLoading(true)
         
-        const asyncFunction = categoryId ? getProductsByCategory : getProducts
-
-        asyncFunction(categoryId).then(response => {
-            setProducts(response)
+        const collectionRef = categoryId 
+            ? query(collection(db, 'products'), where('category', '==', categoryId))
+            : collection(db, 'products')
+        getDocs(collectionRef).then(response => {
+            const productsAdapted = response.docs.map(doc => {
+                return { id: doc.id, ...doc.data() }
+            })
+            setProducts(productsAdapted)
         }).catch(error => {
             console.log(error)
         }).finally(() => {
             setLoading(false)
-        })          
+        })        
     }, [categoryId])
 
 
     if(loading) {
-        return <Loading/>
+        return <Loading></Loading>
     }
 
     return (
-        <div className='ItemListContainer' >
+        <>
             <h1>{greeting}</h1>
-            <ItemList products={products} />
-        </div>
+            <div  className='ItemListContainer' >
+                <ItemList products={products} />
+            </div >
+        </>
     )
 }
 

@@ -1,83 +1,48 @@
 import React  from "react";
 import './ItemDetail.css'
-import { useState } from 'react'
+import { useContext } from 'react'
 import { Link } from 'react-router-dom'
-
-const InputCount = ({onConfirm, stock, initial= 1}) => {
-    const [count, setCount] = useState(initial)
-
-    const handleChange = (e) => {
-        if(e.target.value <= stock) {
-            setCount(e.target.value<= 1?e.target.value:1)
-        }
-    }
-
-    return (
-        <div>
-            <input type='number' onChange={handleChange} value={count}/>
-            <button onClick={() => onConfirm(count)}>Agregar al carrito</button>
-        </div>
-    )
-}
-
-const ButtonCount = ({ onConfirm, stock, initial = 1 }) => {
-    const [count, setCount] = useState(initial)
-
-    const increment = () => {
-        if(count < stock) {
-            setCount(count + 1)
-        }
-    }
-
-    const decrement = () => {
-        setCount(count - 1<=1?1:count-1)
-    }
-
-    return (
-        <div>
-            <p>{count}</p>
-            <button onClick={decrement}>-</button>
-            <button onClick={increment}>+</button>
-            <button onClick={() => onConfirm(count)}>Agregar al carrito</button>
-        </div>
-    )
-}
+import { CartContext } from '../../context/CartContext'
+import ItemCount from "../ItemCount/ItemCount";
+import { NotificationContext } from "../../notification/NotificationService";
 
 
-const ItemDetail = ({ product}) => {
-    const [inputType] = useState('button')
-    const [quantity, setQuantity] = useState(0)
-
-    const ItemCount = inputType === 'input' ? InputCount : ButtonCount
+const ItemDetail = ({ id, name, category, img, price, stock, description}) => {
+    const { addItem, isInCart } = useContext(CartContext)
+    const  setNotification  = useContext(NotificationContext)
 
     const handleOnAdd = (quantity) => {
-        setQuantity(parseInt(quantity))
+        addItem({ id, name, price, quantity})
+        setNotification('success',`Se agrego ${quantity} unidades de ${name}`, 5)
     }
 
     return (
         <article className="CardItem">
             <header className="Header">
                 <h2 className="ItemHeader">
-                    {product.name}
+                    {name}
                 </h2>
             </header>
             <picture>
-                <img src={product.img} alt={product.name} className="ItemImg"/>
+                <img src={img} alt={name} className="ItemImg"/>
             </picture>
             <section>
                 <p className="Info">
-                    Categoria: {product.category}
+                    Categoria: {category}
                 </p>
                 <p className="Info">
-                    Descripción: {product.description}
+                    Descripción: {description}
                 </p>
                 <p className="Info">
-                    Precio: {product.price}
+                    Disponible: {stock}
+                </p>                
+                <p className="Info">
+                    Precio: {price}
                 </p>
             </section>           
             <footer className='ItemFooter'>
                 {
-                    quantity > 0 ? (<Link to='/cart'>Terminar compra</Link>):(<ItemCount stock={product.stock} onConfirm={handleOnAdd} />)
+                    isInCart(id) ? (<Link to='/cart'>Terminar compra</Link>):(<ItemCount stock={stock} onAdd={handleOnAdd} />)
                 }
             </footer>
         </article>

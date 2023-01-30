@@ -1,19 +1,10 @@
-.Counter {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    width: 300px;
-    margin: auto;
-}
-
 .Button {
     text-decoration: none;
     border-radius: 25;
     margin: 0 5px;
     width: auto;
-    padding: 12px;
-    font-size: 8px;
+    /* padding: 10px; */
+    /* font-size: 5px; */
     background: #306bf5;
     border-radius: 8px;
     display: flex;
@@ -30,13 +21,25 @@
     font-size: larger;
 }
 
-.Number {
-    font-size: 15x;
-    padding: 20px;
-    margin: 0;
-}
+  table {
+      border-collapse: collapse;
+      border: 1px solid #ccc;
+  }
 
-.Controls {
-    display: flex;
-    justify-content: center;
-}
+  td,
+  th {
+      padding: 10px;
+  }
+
+  th {
+      background: #000;
+      color: #fff;
+      text-transform: uppercase;
+  }
+
+  td {
+      text-align: center;
+      border-bottom: 2px solid #111;
+      color: #333;
+      font-size: 18px;
+  }

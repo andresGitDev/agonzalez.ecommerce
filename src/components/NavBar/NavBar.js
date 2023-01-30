@@ -1,19 +1,23 @@
-import React from 'react'
+import {React,useContext} from 'react'
 import CartWidget from "../CartWidget/CartWidget"
-import { NavLink ,useNavigate} from 'react-router-dom'
+import { NavLink ,useNavigate,Link} from 'react-router-dom'
 import './NavBar.css'
+import { CartContext } from '../../context/CartContext'
+// import {createProductsInDB} from '../../services/asyncMock'
 
 const NavBar = () => {
     const navigate = useNavigate()
+    const { totalQuantity } = useContext(CartContext)
     return (
         <nav className='NavBar'>
             <h1 className='Title' onClick={() => navigate('/')}>Ecommerce</h1>
             <div className='Categories'>
-                <NavLink to={`/category/celular`} className={({ isActive }) => isActive ? 'ActiveOption' : 'Option'}>Celulares</NavLink>
-                <NavLink to={`/category/tablet`} className={({ isActive }) => isActive ? 'ActiveOption' : 'Option'}>Tablets</NavLink>
-                <NavLink to={`/category/notebook`} className={({ isActive }) => isActive ? 'ActiveOption' : 'Option'}>Notebooks</NavLink>
+                {/* <NavLink><button onClick={createProductsInDB}>Generar productos</button></NavLink> */}
+                <NavLink to={`/category/clothing`} className={({ isActive }) => isActive ? 'ActiveOption' : 'Option'}>Ropa</NavLink>
+                <NavLink to={`/category/jewelery`} className={({ isActive }) => isActive ? 'ActiveOption' : 'Option'}>Joyeria</NavLink>
+                <NavLink to={`/category/electronics`} className={({ isActive }) => isActive ? 'ActiveOption' : 'Option'}>Electronicos</NavLink>
             </div>
-            <CartWidget />
+            <Link to='/cart'><CartWidget totalQuantity={totalQuantity} /></Link>
         </nav>
     )
 }
