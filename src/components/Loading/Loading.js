@@ -1,14 +1,17 @@
 import React from "react";
 import './Loading.css'
 
-const Loading = () => {
+const Loading = ({message}) => {
     return (
-        <div className="dots-wrapper">
-            <div className="dot"></div>
-            <div className="dot"></div>
-            <div className="dot"></div>
-            <div className="dot"></div>
-        </div>
+        <>
+            <h1>{message}</h1>
+            <div className="dots-wrapper">
+                <div className="dot"></div>
+                <div className="dot"></div>
+                <div className="dot"></div>
+                <div className="dot"></div>
+            </div>
+        </>
     )
 }
 

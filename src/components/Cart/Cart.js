@@ -1,5 +1,6 @@
 import { useState,useContext } from 'react' 
 import { useNavigate,Link } from "react-router-dom"
+import { useTitle } from '../../hooks/useTitle'
 import ItemCart from '../ItemCart/ItemCart'
 import Loading from '../Loading/Loading'
 import { CartContext } from '../../context/CartContext'
@@ -8,6 +9,7 @@ import "./Cart.css"
 
 
 const Cart = () => {
+    useTitle('Carrito', [])
     const [loading] = useState(false)
 
     const navigate = useNavigate()
@@ -20,7 +22,7 @@ const Cart = () => {
     }
 
     if(loading) {
-        return (<Loading></Loading>)
+        return (<Loading message="Cargando Carrito"></Loading>)
     }
 
 
