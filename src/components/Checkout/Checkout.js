@@ -5,29 +5,36 @@ import { CartContext } from "../../context/CartContext"
 import { useTitle } from "../../hooks/useTitle"
 import { useNavigate } from "react-router-dom"
 import { createOrder } from "../../services/firebase/firestore/orders"
+import { NotificationContext } from "../../notification/NotificationService"
+import { SessionContext } from "../../context/SessionContext"
 
 const Checkout = () => {
     useTitle('Orden de compra', [])
     const [loading, setLoading] = useState(false)
-    const [name,setName] = useState('')
+    const { session} = useContext(SessionContext)
+    const [name,setName] = useState(session.name)
     const [phone,setPhone] = useState('')
-    const [email,setEmail] = useState('')
+    const [email,setEmail] = useState(session.mail)
     const [direction,setDirection] = useState('')
     const [orderId, setOrderId] = useState('')
     const { cart, totalPay, clearAll } = useContext(CartContext)
+    
+    const  setNotification  = useContext(NotificationContext)
 
     const navigate = useNavigate()
 
     const newOrder = () => {
-            setLoading(true)
-            createOrder(name,phone,email,direction,cart,totalPay).then(response => {
-            setOrderId(response)
-            setTimeout(() => {
-                navigate('/')
-                clearAll()
-            }, 5000)        
+        setLoading(true)
+        createOrder(name,phone,email,direction,cart,totalPay).then(response => {
+            if(response.id) {
+                setOrderId(response.id)
+                setTimeout(() => {
+                    navigate('/')
+                    clearAll()
+                }, 5000)  
+            }else {setNotification('error',response.error, 5)}
         }).catch(error => {
-            console.log(error)
+            setNotification('error',error, 5)
         }).finally(() => {
             setLoading(false)
         })

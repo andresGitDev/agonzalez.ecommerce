@@ -4,6 +4,11 @@ import { db } from "../firebaseConfig"
 import { createAdaptedOrder } from "../../../adapters/orderAdapter"
 
 export const createOrder = async (name,phone,email,direction,cart,totalPay) => {
+    if(!name) {return {error: "Falta ingresar nombre."}}
+    if(!phone) {return {error: "Falta ingresar telefono."}}
+    if(!email) {return {error: "Falta ingresar mail."}}
+    if(!direction) {return {error: "Falta ingresar direccion."}}
+
     const newOrder = createAdaptedOrder(name,phone,email,direction,cart,totalPay)
     const batch = writeBatch(db)
 
@@ -32,8 +37,8 @@ export const createOrder = async (name,phone,email,direction,cart,totalPay) => {
         await batch.commit()
         const orderRef = collection(db, 'orders')
         const { id }= await addDoc(orderRef, newOrder)
-        return id
+        return {id : id}
     } else {
-        return 'Hay productos en el carrito que no tienen stock.'
+        return {error: 'Hay productos en el carrito que no tienen stock.'}
     }
 }
