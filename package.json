@@ -2,6 +2,7 @@
   "name": "app-agonzalez-ecommerce",
   "version": "0.5.0",
   "private": true,
+  "homepage":"app-ecommerce",
   "dependencies": {
     "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/react": "^13.4.0",
